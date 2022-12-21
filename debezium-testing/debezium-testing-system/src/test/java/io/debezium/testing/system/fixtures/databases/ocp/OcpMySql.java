@@ -27,7 +27,7 @@ public class OcpMySql extends OcpDatabaseFixture<SqlDatabaseController> {
 
     @Override
     protected SqlDatabaseController databaseController() throws Exception {
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName("io.hevo.mysql.cj.jdbc.Driver");
         OcpMySqlDeployer deployer = new OcpMySqlDeployer.Deployer()
                 .withOcpClient(ocp)
                 .withProject(ConfigProperties.OCP_PROJECT_MYSQL)

@@ -17,8 +17,6 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import com.mysql.cj.CharsetMapping;
-
 import io.debezium.antlr.AntlrDdlParser;
 import io.debezium.antlr.AntlrDdlParserListener;
 import io.debezium.antlr.DataTypeResolver;
@@ -36,6 +34,7 @@ import io.debezium.relational.SystemVariables;
 import io.debezium.relational.TableEditor;
 import io.debezium.relational.TableId;
 import io.debezium.relational.Tables.TableFilter;
+import io.hevo.mysql.cj.CharsetMapping;
 
 /**
  * An ANTLR based parser for MySQL DDL statements.

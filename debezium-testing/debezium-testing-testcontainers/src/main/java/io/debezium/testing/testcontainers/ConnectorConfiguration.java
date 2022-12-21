@@ -81,7 +81,7 @@ public class ConnectorConfiguration {
     }
 
     private static boolean isMySQL(String driverClassName) {
-        return "com.mysql.cj.jdbc.Driver".equals(driverClassName) || "com.mysql.jdbc.Driver".equals(driverClassName);
+        return "io.hevo.mysql.cj.jdbc.Driver".equals(driverClassName) || "io.hevo.mysql.jdbc.Driver".equals(driverClassName);
     }
 
     private static boolean isSQLServer(String driverClassName) {

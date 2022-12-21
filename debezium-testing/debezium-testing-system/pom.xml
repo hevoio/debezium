@@ -329,8 +329,8 @@
     </dependency>
 
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>io.hevo</groupId>
+      <artifactId>hevo-mysql-connector-java</artifactId>
     </dependency>
 
     <dependency>

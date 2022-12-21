@@ -51,8 +51,8 @@
 
             <!-- Override Quarkus default driver versions -->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
+                <groupId>io.hevo</groupId>
+                <artifactId>hevo-mysql-connector-java</artifactId>
                 <version>${version.mysql.driver}</version>
             </dependency>
 
