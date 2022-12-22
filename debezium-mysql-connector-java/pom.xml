@@ -7,14 +7,15 @@
         <relativePath>../debezium-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>hevo-mysql-connector-java</artifactId>
-    <name>Hevo MySQL Connector Java</name>
+    <artifactId>debezium-mysql-connector-java</artifactId>
+    <name>Debezium MySQL Connector Java</name>
     <packaging>jar</packaging>
 
-<!--    <properties>-->
-<!--        <maven.compiler.source>8</maven.compiler.source>-->
-<!--        <maven.compiler.target>8</maven.compiler.target>-->
-<!--    </properties>-->
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -59,7 +60,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.mysql</pattern>
-                                    <shadedPattern>io.hevo.mysql</shadedPattern>
+                                    <shadedPattern>io.debezium.mysql</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

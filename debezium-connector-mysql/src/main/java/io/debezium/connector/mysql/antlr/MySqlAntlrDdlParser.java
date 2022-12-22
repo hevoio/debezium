@@ -28,13 +28,13 @@ import io.debezium.ddl.parser.mysql.generated.MySqlLexer;
 import io.debezium.ddl.parser.mysql.generated.MySqlParser;
 import io.debezium.ddl.parser.mysql.generated.MySqlParser.CharsetNameContext;
 import io.debezium.ddl.parser.mysql.generated.MySqlParser.CollationNameContext;
+import io.debezium.mysql.cj.CharsetMapping;
 import io.debezium.relational.Column;
 import io.debezium.relational.ColumnEditor;
 import io.debezium.relational.SystemVariables;
 import io.debezium.relational.TableEditor;
 import io.debezium.relational.TableId;
 import io.debezium.relational.Tables.TableFilter;
-import io.hevo.mysql.cj.CharsetMapping;
 
 /**
  * An ANTLR based parser for MySQL DDL statements.

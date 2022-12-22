@@ -31,7 +31,7 @@
             ]
         },
         "mysql": {
-            "jdbcdriver": "io.hevo.mysql.cj.jdbc.Driver",
+            "jdbcdriver": "io.debezium.mysql.cj.jdbc.Driver",
             "jar": "mysql.jar",
             "tpctable": "CREATE TABLE TPC.TEST ( USERNAME VARCHAR(32) NOT NULL, NAME VARCHAR(64), BLOOD_GROUP CHAR(3), RESIDENCE VARCHAR(200), COMPANY VARCHAR(128), ADDRESS VARCHAR(200), BIRTHDATE DATE, SEX CHAR(1), JOB VARCHAR(128), SSN CHAR(11), MAIL VARCHAR(128), ID INTEGER NOT NULL AUTO_INCREMENT, T0 TIMESTAMP  DEFAULT CURRENT_TIMESTAMP ) ",
             "initsql": [],

@@ -14,9 +14,9 @@ import java.util.Calendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.debezium.mysql.cj.protocol.a.NativeConstants;
 import io.debezium.relational.Column;
 import io.debezium.relational.Table;
-import io.hevo.mysql.cj.protocol.a.NativeConstants;
 
 /**
  * Decode binary protocol value for MySQL.

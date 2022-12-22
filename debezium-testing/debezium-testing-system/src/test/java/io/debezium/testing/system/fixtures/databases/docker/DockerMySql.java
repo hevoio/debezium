@@ -25,7 +25,7 @@ public class DockerMySql extends DockerDatabaseFixture<SqlDatabaseController> {
 
     @Override
     protected SqlDatabaseController databaseController() throws Exception {
-        Class.forName("io.hevo.mysql.cj.jdbc.Driver");
+        Class.forName("io.debezium.mysql.cj.jdbc.Driver");
         DockerMySqlDeployer deployer = new DockerMySqlDeployer.Builder()
                 .withNetwork(network)
                 .withContainerConfig(container -> {

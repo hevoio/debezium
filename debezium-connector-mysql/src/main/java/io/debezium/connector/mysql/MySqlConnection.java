@@ -29,13 +29,13 @@ import io.debezium.connector.mysql.MySqlConnectorConfig.SecureConnectionMode;
 import io.debezium.connector.mysql.legacy.MySqlJdbcContext.DatabaseLocales;
 import io.debezium.jdbc.JdbcConfiguration;
 import io.debezium.jdbc.JdbcConnection;
+import io.debezium.mysql.cj.CharsetMapping;
 import io.debezium.relational.Column;
 import io.debezium.relational.Table;
 import io.debezium.relational.TableId;
 import io.debezium.relational.history.DatabaseHistory;
 import io.debezium.schema.DatabaseSchema;
 import io.debezium.util.Strings;
-import io.hevo.mysql.cj.CharsetMapping;
 
 /**
  * {@link JdbcConnection} extension to be used with MySQL Server
