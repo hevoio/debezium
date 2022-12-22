@@ -1,6 +1,6 @@
 # Debezium Documentation
 
-The Debezium documentation in [documentation](https://github.com/debezium/debezium/tree/main/documentation) is built using the [Antora Framework](https://www.antora.org).
+The Debezium documentation in [documentation](https://github.com/hevoio/debezium/tree/main/documentation) is built using the [Antora Framework](https://www.antora.org).
 
 ## Antora Quickstart
 

@@ -18,7 +18,7 @@ delete_projects()
 
 clone_repositories()
 {
-    local DEBEZIUM_REPO="https://github.com/debezium/debezium.git" ;
+    local DEBEZIUM_REPO="https://github.com/hevoio/debezium.git" ;
     local STRIMZI_REPO="https://github.com/strimzi/strimzi-kafka-operator.git" ;
     local PRODUCT_BUILD=false ;
     local STRIMZI_DOWNSTREAM_URL="" ;

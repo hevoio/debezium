@@ -15,5 +15,5 @@ jobs:
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PUBLISH_GH_TOKEN}}
-          repository: debezium/debezium.github.io
+          repository: hevoio/debezium.github.io
           event-type: documentation-update-event

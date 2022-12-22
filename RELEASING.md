@@ -2,7 +2,7 @@
 
 The Debezium project uses Maven for its build system, relying up on the _release_ plugin to most of the work.
 
-The release process is automated by means of a parameterized [Jenkins job](https://github.com/debezium/debezium/blob/main/jenkins-jobs/release.yaml),
+The release process is automated by means of a parameterized [Jenkins job](https://github.com/hevoio/debezium/blob/main/jenkins-jobs/release.yaml),
 that takes the required information as an input (release version etc.)
 and performs most of the required tasks.
 Refer to [Automated release](#automated-release) below for the details.
@@ -41,14 +41,14 @@ Also make sure that each issue is assigned to a component ("mysql-connector" etc
 ### Update the changelog and breaking changes
 
 Create two branches for pull requests to add changelogs (and release announcement) for this
-main repository and the [`debezium.github.io` repository](https://github.com/debezium/debezium.github.io).
+main repository and the [`debezium.github.io` repository](https://github.com/hevoio/debezium.github.io).
 The change log should be updated with all relevant info on new features, bug fixes and breaking changes and
 can be generated with the `Release Notes` tool in JIRA on the version's detail page.
 
-* https://github.com/debezium/debezium/blob/main/CHANGELOG.md
-* https://github.com/debezium/debezium.github.io/blob/develop/_data/releases/1.7/1.7.0.Beta1.yml
-* https://github.com/debezium/debezium.github.io/blob/develop/releases/1.7/release-notes.asciidoc
-* https://github.com/debezium/debezium.github.io/blob/develop/_data/releases/1.7/series.yml
+* https://github.com/hevoio/debezium/blob/main/CHANGELOG.md
+* https://github.com/hevoio/debezium.github.io/blob/develop/_data/releases/1.7/1.7.0.Beta1.yml
+* https://github.com/hevoio/debezium.github.io/blob/develop/releases/1.7/release-notes.asciidoc
+* https://github.com/hevoio/debezium.github.io/blob/develop/_data/releases/1.7/series.yml
 
 JIRA issues that break backwards compatability for existing consumers, should be marked with the "add-to-upgrade-guide" label.
 Search for them using [this query](https://issues.jboss.org/issues/?jql=labels%20%3D%20add-to-upgrade-guide) and describe the
@@ -172,11 +172,11 @@ If the release was successfully prepared, the next step is to push the commits a
 
 Note that if you check for local changes using `git status`, you will see a handful of untracked files, including multiple `pom.xml.releaseBackup` files and a `release.properties` file. These are used by the Maven release plugin, so leave them for the next step in the release process.
 
-At this point, the code on the branch in the [official Debezium repository](https://github.com/debezium/debezium) has been modified and a tag has been created for the release, and we know that the code on the tag successfully builds. Now we're ready to actually perform the release.
+At this point, the code on the branch in the [official Debezium repository](https://github.com/hevoio/debezium) has been modified and a tag has been created for the release, and we know that the code on the tag successfully builds. Now we're ready to actually perform the release.
 
 ### Perform the release
 
-Now that the [official Debezium repository](https://github.com/debezium/debezium) has a tag with the code that we want to release, the next step is to actually build and release what we tagged:
+Now that the [official Debezium repository](https://github.com/hevoio/debezium) has a tag with the code that we want to release, the next step is to actually build and release what we tagged:
 
     $ mvn release:perform
 

@@ -3,7 +3,7 @@ pipelineJob('connector-debezium-oracle-matrix-test') {
     description('Executes tests for Oracle connector with Oracle matrix')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -16,7 +16,7 @@ pipelineJob('connector-debezium-oracle-matrix-test') {
 
     parameters {
         stringParam('MAIL_TO', 'debezium-qe@redhat.com')
-        stringParam('REPOSITORY', 'https://github.com/debezium/debezium', 'Repository from which Debezium is built')
+        stringParam('REPOSITORY', 'https://github.com/hevoio/debezium', 'Repository from which Debezium is built')
         stringParam('BRANCH', 'main', 'A branch/tag from which Debezium is built')
 //          QUAY CONFIG
         stringParam('QUAY_CREDENTIALS', 'rh-integration-quay-creds', 'Quay.io credentials id')

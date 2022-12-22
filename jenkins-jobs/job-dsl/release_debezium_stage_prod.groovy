@@ -3,7 +3,7 @@ pipelineJob('release-debezium-stage-prod') {
     description('Builds and uploads product artifacts into a stage location')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {

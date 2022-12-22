@@ -3,7 +3,7 @@ pipelineJob('rhel-downstream-prepare-job') {
     description('Prepares image for AMQ Streams on RHEL')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -20,7 +20,7 @@ pipelineJob('rhel-downstream-prepare-job') {
 //        KAFKA CONFIG
         stringParam('KAFKA_URL', '', 'AMQ streams kafka')
 //        DEBEZIUM CONFIG
-        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/debezium/debezium.git', 'Repository from which Debezium sources are cloned')
+        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/hevoio/debezium.git', 'Repository from which Debezium sources are cloned')
         stringParam('DBZ_GIT_BRANCH', 'main', 'A branch/tag of Debezium sources')
 //        IMAGE NAME
         booleanParam('AUTO_TAG', true, 'Use automatically generated tag')

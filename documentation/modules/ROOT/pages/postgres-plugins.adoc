@@ -68,7 +68,7 @@ The plug-ins' behaviour is not completely same for all cases. So far these diffe
 * wal2json plug-in does not support special values (`NaN` or `infinity`) for floating point types
 
 All up-to-date differences are tracked in a test suite
-https://github.com/debezium/debezium/blob/main/debezium-connector-postgres/src/test/java/io/debezium/connector/postgresql/DecoderDifferences.java[Java class].
+https://github.com/hevoio/debezium/blob/main/debezium-connector-postgres/src/test/java/io/debezium/connector/postgresql/DecoderDifferences.java[Java class].
 
 More information about the logical decoding and output plug-ins can be found at:
 

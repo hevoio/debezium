@@ -113,8 +113,8 @@ mkdir $DEBEZIUM_TPC_VOLUME
 chmod 777 $DEBEZIUM_TPC_VOLUME
 
 cd $HOME
-git clone https://github.com/debezium/debezium-examples
-git clone https://github.com/debezium/debezium
+git clone https://github.com/hevoio/debezium-examples
+git clone https://github.com/hevoio/debezium
 
 cd debezium/debezium-e2e-benchmark
 # if you like do do it with an other db, adapt the docker-compose file to your prefered database and update the tpc-config.json file for appropriate database ( SQL)

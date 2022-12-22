@@ -3,7 +3,7 @@
 set -ouo > /dev/null 2>&1
 
 GIT_SINCE="24 hours ago"
-GITHUB_COMMIT_URL="https://github.com/debezium/debezium/commit/"
+GITHUB_COMMIT_URL="https://github.com/hevoio/debezium/commit/"
 OUTPUT="documentation_changes.txt"
 GIT_OUTPUT_FILE="git_history.txt"
 GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`

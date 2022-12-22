@@ -241,7 +241,7 @@ public class ExtractNewDocumentStateUpdateFieldOperatorTestIT extends AbstractEx
     /**
      * @see <a href="https://docs.mongodb.com/v3.6/reference/operator/update/unset/#up._S_unset">MongoDB operator update $unset</a>
      * For more details on how the Unset is implemented please refer to:
-     * @see <a href="https://github.com/debezium/debezium/pull/669">DBZ-612 Implementation</a>
+     * @see <a href="https://github.com/hevoio/debezium/pull/669">DBZ-612 Implementation</a>
      */
     @Test
     public void shouldTransformOperationUnset() throws InterruptedException {

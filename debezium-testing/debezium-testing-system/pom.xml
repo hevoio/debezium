@@ -329,7 +329,7 @@
     </dependency>
 
     <dependency>
-      <groupId>io.hevo</groupId>
+      <groupId>io.debezium</groupId>
       <artifactId>hevo-mysql-connector-java</artifactId>
     </dependency>
 

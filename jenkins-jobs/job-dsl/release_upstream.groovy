@@ -3,7 +3,7 @@ pipelineJob('release-debezium-upstream') {
     description('Builds Debezium and deploys into Maven Central and Docker Hub')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -14,7 +14,7 @@ pipelineJob('release-debezium-upstream') {
         stringParam('MAIL_TO', 'jpechane@redhat.com')
         stringParam('RELEASE_VERSION', 'x.y.z.Final', 'Version of Debezium to be released - e.g. 0.5.2.Final')
         stringParam('DEVELOPMENT_VERSION', 'x.y.z-SNAPSHOT', 'Next development version - e.g. 0.5.3-SNAPSHOT')
-        stringParam('DEBEZIUM_REPOSITORY', 'github.com/debezium/debezium.git', 'Repository from which Debezium is built')
+        stringParam('DEBEZIUM_REPOSITORY', 'github.com/hevoio/debezium.git', 'Repository from which Debezium is built')
         stringParam('DEBEZIUM_BRANCH', 'main', 'A branch from which Debezium is built')
         stringParam(
                 'DEBEZIUM_ADDITIONAL_REPOSITORIES',

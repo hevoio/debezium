@@ -15,7 +15,7 @@ The Oracle connector can also be used as a library without Kafka or Kafka Connec
 
 ## Building
 
-Please see the [README.md](https://github.com/debezium/debezium#building-debezium) for general instructions on how to build Debezium from source (prerequisites, usage of Docker etc).
+Please see the [README.md](https://github.com/hevoio/debezium#building-debezium) for general instructions on how to build Debezium from source (prerequisites, usage of Docker etc).
 
 **Note**: The Debezium Oracle connector comes with two adapters, one which uses the XStream API for ingesting change events from the Oracle database.
 Using this API in a production environment requires a license for the Golden Gate product.

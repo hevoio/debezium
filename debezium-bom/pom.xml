@@ -175,11 +175,6 @@
 
             <!-- MySQL JDBC Driver, Binlog reader, Geometry support -->
             <dependency>
-                <groupId>io.hevo</groupId>
-                <artifactId>hevo-mysql-connector-java</artifactId>
-                <version>${version.mysql.driver}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.zendesk</groupId>
                 <artifactId>mysql-binlog-connector-java</artifactId>
                 <version>${version.mysql.binlog}</version>
@@ -614,6 +609,11 @@
             <dependency>
                 <groupId>io.debezium</groupId>
                 <artifactId>debezium-quarkus-outbox-deployment</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.debezium</groupId>
+                <artifactId>hevo-mysql-connector-java</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

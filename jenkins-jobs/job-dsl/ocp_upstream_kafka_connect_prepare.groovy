@@ -3,7 +3,7 @@ pipelineJob('ocp-upstream-kafka-connect-prepare-job') {
     description('Prepares Strimzi')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -16,9 +16,9 @@ pipelineJob('ocp-upstream-kafka-connect-prepare-job') {
         stringParam('QUAY_CREDENTIALS', 'debezium-quay-creds', 'Quay.io credentials id')
         stringParam('QUAY_ORGANISATION', 'debezium', 'Organisation where images are copied')
 //        DEBEZIUM CONFIG
-        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/debezium/debezium.git', 'Repository from which Debezium sources are cloned')
+        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/hevoio/debezium.git', 'Repository from which Debezium sources are cloned')
         stringParam('DBZ_GIT_BRANCH', 'main', 'A branch/tag of Debezium sources')
-        stringParam('DBZ_GIT_REPOSITORY_DB2', 'https://github.com/debezium/debezium-connector-db2.git', 'Repository from which Debezium DB2 sources are cloned')
+        stringParam('DBZ_GIT_REPOSITORY_DB2', 'https://github.com/hevoio/debezium-connector-db2.git', 'Repository from which Debezium DB2 sources are cloned')
         stringParam('DBZ_GIT_BRANCH_DB2', 'main', 'A branch/tag of Debezium DB2 sources')
 //        IMAGE NAME
         booleanParam('AUTO_TAG', true, 'Use automatically generated tag')

@@ -3,7 +3,7 @@ pipelineJob('ocp-debezium-testing-system') {
     description('Executes tests for OpenShift & Strimzi compatibility verification')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -22,9 +22,9 @@ pipelineJob('ocp-debezium-testing-system') {
 //        PULL SECRET
         stringParam('PULL_SECRET', 'rh-integration-quay-secret', 'Quay.io OpenShift secret')
 //        DEBEZIUM CONFIG
-        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/debezium/debezium.git', 'Repository from which Debezium sources are cloned')
+        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/hevoio/debezium.git', 'Repository from which Debezium sources are cloned')
         stringParam('DBZ_GIT_BRANCH', 'main', 'A branch/tag of Debezium sources')
-        stringParam('DBZ_GIT_REPOSITORY_DB2', 'https://github.com/debezium/debezium-connector-db2.git', 'Repository from which Debezium DB2 sources are cloned')
+        stringParam('DBZ_GIT_REPOSITORY_DB2', 'https://github.com/hevoio/debezium-connector-db2.git', 'Repository from which Debezium DB2 sources are cloned')
         stringParam('DBZ_GIT_BRANCH_DB2', 'main', 'A branch/tag of Debezium DB2 sources')
 //        STRIMZI CONFIG
         stringParam('STRZ_GIT_REPOSITORY', 'https://github.com/strimzi/strimzi-kafka-operator.git', 'Repository from which Strimzi is cloned')

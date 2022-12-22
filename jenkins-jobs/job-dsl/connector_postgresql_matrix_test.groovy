@@ -20,11 +20,11 @@ matrixJob('connector-debezium-postgresql-matrix-test') {
     }
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     parameters {
-        stringParam('REPOSITORY', 'https://github.com/debezium/debezium', 'Repository from which Debezium is built')
+        stringParam('REPOSITORY', 'https://github.com/hevoio/debezium', 'Repository from which Debezium is built')
         stringParam('BRANCH', 'main', 'A branch/tag from which Debezium is built')
         stringParam('SOURCE_URL', "", "URL to productised sources")
         booleanParam('PRODUCT_BUILD', false, 'Is this a productised build?')

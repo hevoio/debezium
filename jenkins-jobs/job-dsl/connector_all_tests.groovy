@@ -10,11 +10,11 @@ pipelineJob('connector-all-tests') {
         booleanParam('POSTGRESQL_TEST', true, 'Run PostgreSQL Tests')
         booleanParam('SQLSERVER_TEST', true, 'Run SQL Server Tests')
 
-        stringParam('REPOSITORY_CORE', 'https://github.com/debezium/debezium', 'Repository from which Debezium is built')
+        stringParam('REPOSITORY_CORE', 'https://github.com/hevoio/debezium', 'Repository from which Debezium is built')
         stringParam('BRANCH', 'main', 'A branch/tag from which Debezium is built')
 
         // db2 specific
-        stringParam('REPOSITORY_DB2', 'https://github.com/debezium/debezium-connector-db2', 'Repository from which DB2 connector is built')
+        stringParam('REPOSITORY_DB2', 'https://github.com/hevoio/debezium-connector-db2', 'Repository from which DB2 connector is built')
 
         stringParam('SOURCE_URL', "", "URL to productised sources")
         booleanParam('PRODUCT_BUILD', false, 'Is this a productised build?')

@@ -7,11 +7,11 @@ freeStyleJob('debezium-kafka-1.x-test') {
     label('Slave')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     parameters {
-        stringParam('REPOSITORY', 'https://github.com/debezium/debezium', 'Repository from which Debezium is built')
+        stringParam('REPOSITORY', 'https://github.com/hevoio/debezium', 'Repository from which Debezium is built')
         stringParam('BRANCH', '*/main', 'A branch/tag from which Debezium is built')
     }
 

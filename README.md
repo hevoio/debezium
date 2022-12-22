@@ -93,7 +93,7 @@ These can be set automatically if using Docker Machine or something similar.
 
 First obtain the code by cloning the Git repository:
 
-    $ git clone https://github.com/debezium/debezium.git
+    $ git clone https://github.com/hevoio/debezium.git
     $ cd debezium
 
 Then build the code using Maven:
@@ -178,6 +178,6 @@ The Debezium community welcomes anyone that wants to help out in any way, whethe
 
 A big thank you to all the Debezium contributors!
 
-<a href="https://github.com/debezium/debezium/graphs/contributors">
+<a href="https://github.com/hevoio/debezium/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=debezium/debezium" />
 </a>

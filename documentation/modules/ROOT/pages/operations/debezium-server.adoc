@@ -873,7 +873,7 @@ The name of the bean is used as the `debezium.sink.type` option.
 The sink needs to read the configuration using Microprofile Config API.
 The execution path must pass the messages into the target system and regularly commit the passed/processed messages.
 
-See the https://github.com/debezium/debezium/blob/main/debezium-server/debezium-server-kinesis/src/main/java/io/debezium/server/kinesis/KinesisChangeConsumer.java[Kinesis sink] implementation for further details.
+See the https://github.com/hevoio/debezium/blob/main/debezium-server/debezium-server-kinesis/src/main/java/io/debezium/server/kinesis/KinesisChangeConsumer.java[Kinesis sink] implementation for further details.
 
 
 === Customization of an existing sink
@@ -881,4 +881,4 @@ See the https://github.com/debezium/debezium/blob/main/debezium-server/debezium-
 Some of the sinks exposes dependency injections points that enable users to provide its own bean that would modify the behaviour of the sink.
 Typical examples are fine tuning of the target client setup, the destination naming etc.
 
-See an example of a custom https://github.com/debezium/debezium-examples/tree/main/debezium-server-name-mapper[topic naming policy] implementation for further details.
+See an example of a custom https://github.com/hevoio/debezium-examples/tree/main/debezium-server-name-mapper[topic naming policy] implementation for further details.

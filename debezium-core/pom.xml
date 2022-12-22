@@ -10,6 +10,7 @@
     <artifactId>debezium-core</artifactId>
     <name>Debezium Core</name>
     <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>io.debezium</groupId>

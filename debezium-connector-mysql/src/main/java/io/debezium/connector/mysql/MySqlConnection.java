@@ -6,6 +6,19 @@
 
 package io.debezium.connector.mysql;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.OptionalLong;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.debezium.DebeziumException;
 import io.debezium.config.CommonConnectorConfig;
 import io.debezium.config.CommonConnectorConfig.EventProcessingFailureHandlingMode;
@@ -23,18 +36,6 @@ import io.debezium.relational.history.DatabaseHistory;
 import io.debezium.schema.DatabaseSchema;
 import io.debezium.util.Strings;
 import io.hevo.mysql.cj.CharsetMapping;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.OptionalLong;
 
 /**
  * {@link JdbcConnection} extension to be used with MySQL Server

@@ -3,7 +3,7 @@ pipelineJob('node-snapshot-build') {
     description('Updates jenkins node snapshot')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {

@@ -3,7 +3,7 @@ pipelineJob('ocp-downstream-apicurio-prepare-job') {
     description('Republishes apicurio registry images to quay.io and replaces them in deployment descriptor')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -20,7 +20,7 @@ pipelineJob('ocp-downstream-apicurio-prepare-job') {
         stringParam('APIC_RESOURCES_DEPLOYMENT_DESCRIPTOR', 'install.yaml', 'Descriptor for deployment')
         textParam('APIC_IMAGES', '', 'List of productised apicurio images')
 //        DEBEZIUM CONFIG
-        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/debezium/debezium.git', 'Repository from which Debezium sources are cloned')
+        stringParam('DBZ_GIT_REPOSITORY', 'https://github.com/hevoio/debezium.git', 'Repository from which Debezium sources are cloned')
         stringParam('DBZ_GIT_BRANCH', 'main', 'A branch/tag of Debezium sources')
 //        EXTRA CONFIG
         booleanParam('PUSH_IMAGES', true, 'Push images to quay.io')

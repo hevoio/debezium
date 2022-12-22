@@ -17,9 +17,9 @@
     <url>https://debezium.io</url>
 
     <scm>
-        <connection>scm:git:git@github.com:debezium/debezium.git</connection>
-        <developerConnection>scm:git:git@github.com:debezium/debezium.git</developerConnection>
-        <url>https://github.com/debezium/debezium</url>
+        <connection>scm:git:git@github.com:hevoio/debezium.git</connection>
+        <developerConnection>scm:git:git@github.com:hevoio/debezium.git</developerConnection>
+        <url>https://github.com/hevoio/debezium</url>
         <tag>v1.9.5.Final</tag>
     </scm>
 
@@ -121,7 +121,6 @@
 
         <!-- Database drivers, should align with databases -->
         <version.postgresql.driver>42.3.5</version.postgresql.driver>
-        <version.mysql.driver>8.0.28</version.mysql.driver>
         <version.mysql.binlog>0.25.6</version.mysql.binlog>
         <version.mongo.driver>4.3.3</version.mongo.driver>
         <version.sqlserver.driver>9.4.1.jre8</version.sqlserver.driver>
@@ -163,6 +162,7 @@
         <module>debezium-testing</module>
         <module>debezium-connect-rest-extension</module>
         <module>debezium-schema-generator</module>
+        <module>hevo-mysql-connector-java</module>
     </modules>
 
     <distributionManagement>

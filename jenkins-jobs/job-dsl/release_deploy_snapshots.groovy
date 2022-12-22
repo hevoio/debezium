@@ -3,7 +3,7 @@ pipelineJob('release-deploy-snapshots') {
     description('Deploy -SNAPSHOT versions to Maven Central')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -18,7 +18,7 @@ pipelineJob('release-deploy-snapshots') {
     parameters {
 
         stringParam('MAIL_TO', 'jpechane@redhat.com')
-        stringParam('DEBEZIUM_REPOSITORY', 'github.com/debezium/debezium.git', 'Repository from which Debezium is built')
+        stringParam('DEBEZIUM_REPOSITORY', 'github.com/hevoio/debezium.git', 'Repository from which Debezium is built')
         stringParam('DEBEZIUM_BRANCH', 'main', 'A branch from which Debezium is built')
         stringParam(
                 'DEBEZIUM_ADDITIONAL_REPOSITORIES',

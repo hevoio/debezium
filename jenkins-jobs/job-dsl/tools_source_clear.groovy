@@ -7,7 +7,7 @@ freeStyleJob('tools-debezium-source-clear') {
     label('Slave')
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium')
+        githubProjectUrl('https://github.com/hevoio/debezium')
     }
 
     logRotator {
@@ -41,7 +41,7 @@ freeStyleJob('tools-debezium-source-clear') {
     steps {
         shell('''
 if [ "$BINARY" = "false" ]; then
-    docker run -e SRCCLR_TOKEN="$SRCCLR_TOKEN" quay.io/debezium/vulnerability-scan scm https://github.com/debezium/debezium.git "$PRODUCT_VERSION" "$SOURCE_TAG"
+    docker run -e SRCCLR_TOKEN="$SRCCLR_TOKEN" quay.io/debezium/vulnerability-scan scm https://github.com/hevoio/debezium.git "$PRODUCT_VERSION" "$SOURCE_TAG"
 else
     for CONNECTOR in $PLUGINS; do
         docker run -e SRCCLR_TOKEN="$SRCCLR_TOKEN" quay.io/debezium/vulnerability-scan binary "$SOURCE_MAVEN_REPO/debezium-connector-$CONNECTOR/$BUILD_VERSION/debezium-connector-$CONNECTOR-${BUILD_VERSION}-plugin.zip" "$PRODUCT_VERSION" "$SOURCE_TAG"

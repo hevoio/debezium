@@ -92,7 +92,7 @@ Docker Maven插件通过检查以下环境变量来解析Docker主机：
 
 首先从Git仓库获取代码：
 
-    $ git clone https://github.com/debezium/debezium.git
+    $ git clone https://github.com/hevoio/debezium.git
     $ cd debezium
 
 然后用maven构建项目
@@ -172,6 +172,6 @@ Debezium社区欢迎所有愿意提供帮助的人，无论是报告问题，帮
 
 非常感谢所有Debezium贡献者！
 
-<a href="https://github.com/debezium/debezium/graphs/contributors">
+<a href="https://github.com/hevoio/debezium/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=debezium/debezium" />
 </a>

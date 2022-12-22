@@ -95,7 +95,7 @@ Docker Maven Plugin は Docker host を以下の環境変数を探す事によ�
 
 まずは Git repository を clone してコードを取得します
 
-    $ git clone https://github.com/debezium/debezium.git
+    $ git clone https://github.com/hevoio/debezium.git
     $ cd debezium
 
 ビルドには Maven を利用します
@@ -167,6 +167,6 @@ Debezium コミュニティは、問題の報告、文書作成の支援、バ�
 
 Debezium の貢献者の皆さんに感謝します。
 
-<a href="https://github.com/debezium/debezium/graphs/contributors">
+<a href="https://github.com/hevoio/debezium/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=debezium/debezium" />
 </a>

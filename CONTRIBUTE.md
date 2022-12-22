@@ -43,7 +43,7 @@ If you don't have an account yet, you can create one for free by clicking "Log I
 
 ### Fork the Debezium repository
 
-Go to the [Debezium repository](https://github.com/debezium/debezium) and press the "Fork" button near the upper right corner of the page. When finished, you will have your own "fork" at `https://github.com/<your-username>/debezium`, and this is the repository to which you will upload your proposed changes and create pull requests. For details, see the [GitHub documentation](https://help.github.com/articles/fork-a-repo/).
+Go to the [Debezium repository](https://github.com/hevoio/debezium) and press the "Fork" button near the upper right corner of the page. When finished, you will have your own "fork" at `https://github.com/<your-username>/debezium`, and this is the repository to which you will upload your proposed changes and create pull requests. For details, see the [GitHub documentation](https://help.github.com/articles/fork-a-repo/).
 
 ### Clone your fork
 
@@ -59,9 +59,9 @@ This will create a `debezium` directory, so change into that directory:
 
     $ cd debezium
 
-This repository knows about your fork, but it doesn't yet know about the official or ["upstream" Debezium repository](https://github.com/debezium/debezium). Run the following commands:
+This repository knows about your fork, but it doesn't yet know about the official or ["upstream" Debezium repository](https://github.com/hevoio/debezium). Run the following commands:
 
-    $ git remote add upstream https://github.com/debezium/debezium.git
+    $ git remote add upstream https://github.com/hevoio/debezium.git
     $ git fetch upstream
     $ git branch --set-upstream-to=upstream/main main
 
@@ -191,7 +191,7 @@ If your changes are compatible with the latest changes on `main`, this will comp
 When adding new features such as e.g. a connector or configuration options, they must be documented accordingly in the Debezium [reference documentation](https://debezium.io/documentation/).
 The same applies when changing existing behaviors, e.g. type mappings, removing options etc.
 
-The documentation is written using AsciiDoc/Antora and can be found in the Debezium [source code repository](https://github.com/debezium/debezium/tree/main/documentation).
+The documentation is written using AsciiDoc/Antora and can be found in the Debezium [source code repository](https://github.com/hevoio/debezium/tree/main/documentation).
 Any documentation update should be part of the pull request you submit for the code change.
 
 ### Creating a pull request
@@ -232,7 +232,7 @@ and in your fork:
 
 The project currently builds its jobs in two environments:
 
-- GitHub Actions for pull requests: https://github.com/debezium/debezium/actions
+- GitHub Actions for pull requests: https://github.com/hevoio/debezium/actions
   - Tests run only against the current version of each supported database
 - Jenkins CI for tests matrix, deployment, release, etc - http://ci.hibernate.org/view/Debezium/
   - Test run against all database versions supported by the individual connectors

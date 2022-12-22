@@ -11,11 +11,11 @@ matrixJob('connector-debezium-db2-matrix-test') {
     }
 
     properties {
-        githubProjectUrl('https://github.com/debezium/debezium-connector-db2')
+        githubProjectUrl('https://github.com/hevoio/debezium-connector-db2')
     }
 
     parameters {
-        stringParam('REPOSITORY', 'https://github.com/debezium/debezium-connector-db2', 'Repository from which connector is built')
+        stringParam('REPOSITORY', 'https://github.com/hevoio/debezium-connector-db2', 'Repository from which connector is built')
         stringParam('BRANCH', 'main', 'A branch/tag from which the connector is built')
         stringParam('SOURCE_URL', "", "URL to productised sources")
         booleanParam('PRODUCT_BUILD', false, 'Is this a productised build?')
