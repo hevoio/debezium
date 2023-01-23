@@ -16,6 +16,7 @@ import java.sql.Types;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.kafka.connect.data.Date;
 import org.apache.kafka.connect.data.Decimal;
 import org.apache.kafka.connect.data.Field;
 import org.apache.kafka.connect.data.Schema;
@@ -179,7 +181,7 @@ public class MySqlValueConverters extends JdbcValueConverters {
             return io.debezium.data.geometry.Geometry.builder();
         }
         if (matches(typeName, "YEAR")) {
-            return Year.builder();
+            return Date.builder();
         }
         if (matches(typeName, "ENUM")) {
             String commaSeparatedOptions = extractEnumAndSetOptionsAsString(column);
@@ -237,7 +239,7 @@ public class MySqlValueConverters extends JdbcValueConverters {
             return (data -> convertPoint(column, fieldDefn, data));
         }
         if (matches(typeName, "YEAR")) {
-            return (data) -> convertYearToInt(column, fieldDefn, data);
+            return (data) -> getDateInUTC((int)convertYearToInt(column, fieldDefn, data),1,1);
         }
         if (matches(typeName, "ENUM")) {
             // Build up the character array based upon the column's type ...
@@ -889,4 +891,9 @@ public class MySqlValueConverters extends JdbcValueConverters {
     public static void defaultParsingErrorHandler(String message, Exception exception) {
         throw new DebeziumException(message, exception);
     }
+    public static java.util.Date getDateInUTC(int year, int month, int date) {
+        LocalDate localDate = LocalDate.of(year, month, date);
+        return java.util.Date.from(localDate.atStartOfDay(ZoneId.of("UTC")).toInstant());
+    }
+
 }
