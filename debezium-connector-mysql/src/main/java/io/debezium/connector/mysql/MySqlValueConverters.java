@@ -304,8 +304,6 @@ public class MySqlValueConverters extends JdbcValueConverters {
                 if (adaptiveTimeMicrosecondsPrecisionMode) {
                     return data -> convertDurationToMicroseconds(column, fieldDefn, data);
                 }
-            case Types.TIMESTAMP:
-                return ((ValueConverter) (data -> convertTimestampToLocalDateTime(column, fieldDefn, data))).and(super.converter(column, fieldDefn));
             default:
                 break;
         }
