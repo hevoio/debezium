@@ -216,39 +216,14 @@ public class JdbcValueConverters implements ValueConverterProvider {
                 return Xml.builder();
             // Date and time values
             case Types.DATE:
-                if (adaptiveTimePrecisionMode || adaptiveTimeMicrosecondsPrecisionMode) {
-                    return Date.builder();
-                }
                 return org.apache.kafka.connect.data.Date.builder();
             case Types.TIME:
-                if (adaptiveTimeMicrosecondsPrecisionMode) {
-                    return MicroTime.builder();
-                }
-                if (adaptiveTimePrecisionMode) {
-                    if (getTimePrecision(column) <= 3) {
-                        return Time.builder();
-                    }
-                    if (getTimePrecision(column) <= 6) {
-                        return MicroTime.builder();
-                    }
-                    return NanoTime.builder();
-                }
                 return org.apache.kafka.connect.data.Time.builder();
+            case Types.TIMESTAMP_WITH_TIMEZONE:
             case Types.TIMESTAMP:
-                if (adaptiveTimePrecisionMode || adaptiveTimeMicrosecondsPrecisionMode) {
-                    if (getTimePrecision(column) <= 3) {
-                        return Timestamp.builder();
-                    }
-                    if (getTimePrecision(column) <= 6) {
-                        return MicroTimestamp.builder();
-                    }
-                    return NanoTimestamp.builder();
-                }
                 return org.apache.kafka.connect.data.Timestamp.builder();
             case Types.TIME_WITH_TIMEZONE:
                 return ZonedTime.builder();
-            case Types.TIMESTAMP_WITH_TIMEZONE:
-                return ZonedTimestamp.builder();
 
             // Other types ...
             case Types.ROWID:
@@ -323,27 +298,15 @@ public class JdbcValueConverters implements ValueConverterProvider {
 
             // Date and time values
             case Types.DATE:
-                if (adaptiveTimePrecisionMode || adaptiveTimeMicrosecondsPrecisionMode) {
-                    return (data) -> convertDateToEpochDays(column, fieldDefn, data);
-                }
                 return (data) -> convertDateToEpochDaysAsDate(column, fieldDefn, data);
             case Types.TIME:
                 return (data) -> convertTime(column, fieldDefn, data);
             case Types.TIMESTAMP:
-                if (adaptiveTimePrecisionMode || adaptiveTimeMicrosecondsPrecisionMode) {
-                    if (getTimePrecision(column) <= 3) {
-                        return data -> convertTimestampToEpochMillis(column, fieldDefn, data);
-                    }
-                    if (getTimePrecision(column) <= 6) {
-                        return data -> convertTimestampToEpochMicros(column, fieldDefn, data);
-                    }
-                    return (data) -> convertTimestampToEpochNanos(column, fieldDefn, data);
-                }
                 return (data) -> convertTimestampToEpochMillisAsDate(column, fieldDefn, data);
             case Types.TIME_WITH_TIMEZONE:
                 return (data) -> convertTimeWithZone(column, fieldDefn, data);
             case Types.TIMESTAMP_WITH_TIMEZONE:
-                return (data) -> convertTimestampWithZone(column, fieldDefn, data);
+                return (data) -> convertTimestampWithZoneToEpochMillisAsDate(column, fieldDefn, data);
 
             // Other types ...
             case Types.ROWID:
@@ -390,6 +353,17 @@ public class JdbcValueConverters implements ValueConverterProvider {
         return convertValue(column, fieldDefn, data, fallbackTimestampWithTimeZone, (r) -> {
             try {
                 r.deliver(ZonedTimestamp.toIsoString(data, defaultOffset, adjuster));
+            }
+            catch (IllegalArgumentException e) {
+            }
+        });
+    }
+
+
+    protected Object convertTimestampWithZoneToEpochMillisAsDate(Column column, Field fieldDefn, Object data) {
+        return convertValue(column, fieldDefn, data, fallbackTimestampWithTimeZone, (r) -> {
+            try {
+                r.deliver(new java.util.Date(((java.time.ZonedDateTime) data).toInstant().toEpochMilli()));
             }
             catch (IllegalArgumentException e) {
             }
