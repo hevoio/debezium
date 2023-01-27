@@ -361,12 +361,21 @@ public class JdbcValueConverters implements ValueConverterProvider {
 
 
     protected Object convertTimestampWithZoneToEpochMillisAsDate(Column column, Field fieldDefn, Object data) {
-        return convertValue(column, fieldDefn, data, fallbackTimestampWithTimeZone, (r) -> {
-            try {
-                r.deliver(new java.util.Date(((java.time.ZonedDateTime) data).toInstant().toEpochMilli()));
+    return convertValue(
+        column,
+        fieldDefn,
+        data,
+        fallbackTimestampWithTimeZone,
+        (r) -> {
+          try {
+            if (data instanceof java.time.ZonedDateTime) {
+              r.deliver(
+                  new java.util.Date(((java.time.ZonedDateTime) data).toInstant().toEpochMilli()));
+            } else if(data instanceof java.sql.Timestamp){
+                r.deliver(new java.util.Date(Timestamp.toEpochMillis(data, adjuster)));
             }
-            catch (IllegalArgumentException e) {
-            }
+          } catch (IllegalArgumentException e) {
+          }
         });
     }
 
