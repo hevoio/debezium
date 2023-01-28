@@ -373,6 +373,9 @@ public class JdbcValueConverters implements ValueConverterProvider {
                   new java.util.Date(((java.time.ZonedDateTime) data).toInstant().toEpochMilli()));
             } else if(data instanceof java.sql.Timestamp){
                 r.deliver(new java.util.Date(Timestamp.toEpochMillis(data, adjuster)));
+            } else {
+                logger.warn("Returning string for timestamp with timezone data type as could not parse it for column: {} and data: {}", column, data);
+                r.deliver((data.toString()));
             }
           } catch (IllegalArgumentException e) {
           }
