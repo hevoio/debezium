@@ -7,6 +7,7 @@ package io.debezium.connector.oracle.logminer;
 
 import static io.debezium.connector.oracle.logminer.LogMinerHelper.setLogFilesForMining;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -20,10 +21,14 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.debezium.config.Instantiator;
+import io.debezium.connector.oracle.HevoOracleBatchStats;
+import io.debezium.pipeline.source.spi.HevoStatsConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +96,8 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
     private List<BigInteger> currentRedoLogSequences;
     private OracleOffsetContext effectiveOffset;
 
+    HevoStatsConsumer statsConsumer;
+
     public LogMinerStreamingChangeEventSource(OracleConnectorConfig connectorConfig,
                                               OracleConnection jdbcConnection, EventDispatcher<OraclePartition, TableId> dispatcher,
                                               ErrorHandler errorHandler, Clock clock, OracleDatabaseSchema schema,
@@ -111,11 +118,24 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
         this.logFileQueryMaxRetries = connectorConfig.getMaximumNumberOfLogQueryRetries();
         this.initialDelay = connectorConfig.getLogMiningInitialDelay();
         this.maxDelay = connectorConfig.getLogMiningMaxDelay();
+        this.statsConsumer = initialiseStatsConsumer();
     }
 
     @Override
     public void init(OracleOffsetContext offsetContext) throws InterruptedException {
         this.effectiveOffset = offsetContext == null ? emptyContext() : offsetContext;
+    }
+
+    private HevoStatsConsumer initialiseStatsConsumer(){
+        try {
+            String statsConsumerClassName = connectorConfig.getStatsConsumer();
+            Class<? extends HevoStatsConsumer> statsConsumerClass = (Class<HevoStatsConsumer>) Instantiator.getClassLoader().loadClass(statsConsumerClassName);
+            return statsConsumerClass.getDeclaredConstructor().newInstance();
+        }catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+                InvocationTargetException e){
+            LOGGER.warn("Observability stats consumer could not be initialised for hevo batch id: {}", connectorConfig.getHevoBatchId(), e);
+        }
+        return null;
     }
 
     private OracleOffsetContext emptyContext() {
@@ -174,6 +194,7 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
 
                     int retryAttempts = 1;
                     Stopwatch sw = Stopwatch.accumulating().start();
+                    int iterations = 1;
                     while (context.isRunning()) {
                         // Calculate time difference before each mining session to detect time zone offset changes (e.g. DST) on database server
                         streamingMetrics.calculateTimeDifference(getDatabaseSystemTime(jdbcConnection));
@@ -233,14 +254,20 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
                         }
 
                         if (context.isRunning()) {
+                            LOGGER.info("Observability metrics tracking: iteration: {}, starting logminer for SCN range - startScn: {}, endScn: {}",  iterations++, startScn, endScn);
                             if (!startMiningSession(jdbcConnection, startScn, endScn, retryAttempts)) {
                                 retryAttempts++;
                             }
                             else {
                                 retryAttempts = 1;
+                                LOGGER.info("Observability metrics tracking: iteration: {}, starting mining in SCN range - startScn: {}, endScn: {}", iterations, startScn, endScn);
+                                streamingMetrics.setStartScn(startScn);
+                                streamingMetrics.setEndScn(endScn);
                                 startScn = processor.process(startScn, endScn);
                                 streamingMetrics.setCurrentBatchProcessingTime(Duration.between(start, Instant.now()));
                                 captureSessionMemoryStatistics(jdbcConnection);
+                                publishBatchStats(iterations);
+                                LOGGER.info("Observability metrics tracking: iteration: {}, mining complete for batch in SCN range - startScn: {}, endScn: {}, total records processed: {}, last commit SCN: {}", iterations++, startScn, endScn, streamingMetrics.getTotalProcessedRows(), streamingMetrics.getCommittedScn());
                             }
                             pauseBetweenMiningSessions();
                         }
@@ -257,6 +284,14 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
             LOGGER.info("startScn={}, endScn={}", startScn, endScn);
             LOGGER.info("Streaming metrics dump: {}", streamingMetrics.toString());
             LOGGER.info("Offsets: {}", offsetContext);
+        }
+    }
+
+    private void publishBatchStats(long runNumber){
+        if(Objects.nonNull(statsConsumer)) {
+            statsConsumer.publishStats(new HevoOracleBatchStats(streamingMetrics.getCurrentScn(), streamingMetrics.getLastCapturedDmlCount(), streamingMetrics.getLastBatchProcessingTimeInMilliseconds(), streamingMetrics.getNumberOfCommittedTransactions(), streamingMetrics.getCommittedScn(), streamingMetrics.getCommitedDmlCount(), streamingMetrics.getSkippedDmlCount(), streamingMetrics.getBatchStartScn(), streamingMetrics.getBatchEndScn()));
+        }else {
+            LOGGER.warn("Observability stats could not be published for batch id: {}, on run number: {}", connectorConfig.getHevoBatchId(), runNumber);
         }
     }
 

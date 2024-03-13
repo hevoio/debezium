@@ -311,6 +311,7 @@ public abstract class AbstractLogMinerEventProcessor<T extends AbstractTransacti
             // We do the non-DDL ones here to cover multiple switch handlers in one place.
             if (!EventType.DDL.equals(row.getEventType()) && !tableFilter.isIncluded(row.getTableId())) {
                 LOGGER.trace("Skipping change associated with table '{}' which does not match filters.", row.getTableId());
+                metrics.incrementSkippedDmlCount();
                 return;
             }
         }
