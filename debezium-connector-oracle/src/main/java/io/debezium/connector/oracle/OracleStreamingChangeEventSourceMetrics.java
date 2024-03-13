@@ -42,6 +42,10 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
     private static final int TRANSACTION_ID_SET_SIZE = 10;
 
     private final AtomicReference<Scn> currentScn = new AtomicReference<>();
+
+    private final AtomicReference<Scn> startScn = new AtomicReference<>();
+
+    private final AtomicReference<Scn> endScn = new AtomicReference<>();
     private final AtomicInteger logMinerQueryCount = new AtomicInteger();
     private final AtomicInteger totalCapturedDmlCount = new AtomicInteger();
     private final AtomicReference<Duration> totalDurationOfFetchingQuery = new AtomicReference<>();
@@ -85,6 +89,9 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
     private final AtomicReference<LRUCacheMap<String, String>> abandonedTransactionIds = new AtomicReference<>();
     private final AtomicReference<LRUCacheMap<String, String>> rolledBackTransactionIds = new AtomicReference<>();
     private final AtomicLong registeredDmlCount = new AtomicLong();
+
+    private final AtomicLong skippedDmlCount = new AtomicLong();
+
     private final AtomicLong committedDmlCount = new AtomicLong();
     private final AtomicInteger errorCount = new AtomicInteger();
     private final AtomicInteger warningCount = new AtomicInteger();
@@ -137,6 +144,8 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
         zoneOffset.set(ZoneOffset.UTC);
 
         currentScn.set(Scn.NULL);
+        startScn.set(Scn.NULL);
+        endScn.set(Scn.NULL);
         oldestScn.set(Scn.NULL);
         offsetScn.set(Scn.NULL);
         committedScn.set(Scn.NULL);
@@ -173,6 +182,7 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
         totalDurationOfFetchingQuery.set(Duration.ZERO);
         lastCapturedDmlCount.set(0);
         maxCapturedDmlCount.set(0);
+        skippedDmlCount.set(0);
         totalBatchProcessingDuration.set(Duration.ZERO);
         maxBatchProcessingThroughput.set(0);
         lastBatchProcessingDuration.set(Duration.ZERO);
@@ -212,6 +222,10 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
     public void setCurrentScn(Scn scn) {
         currentScn.set(scn);
     }
+
+    public void setStartScn(Scn scn){startScn.set(scn);}
+
+    public void setEndScn(Scn scn){endScn.set(scn);}
 
     public void setCurrentLogFileName(Set<String> names) {
         currentLogFileName.set(names.stream().toArray(String[]::new));
@@ -626,6 +640,14 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
         return miningSessionProcessGlobalAreaMemory.get();
     }
 
+    public long getCommitedDmlCount(){return committedDmlCount.get();}
+
+    public long getSkippedDmlCount(){return skippedDmlCount.get();}
+
+    public BigInteger getBatchStartScn(){return startScn.get().asBigInteger();}
+
+    public BigInteger getBatchEndScn(){return endScn.get().asBigInteger();}
+
     @Override
     public long getMiningSessionProcessGlobalAreaMaxMemoryInBytes() {
         return miningSessionProcessGlobalAreaMaxMemory.get();
@@ -665,6 +687,10 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
 
     public void incrementCommittedDmlCount(long counter) {
         committedDmlCount.getAndAdd(counter);
+    }
+
+    public void incrementSkippedDmlCount(){
+        skippedDmlCount.incrementAndGet();
     }
 
     public void incrementErrorCount() {
