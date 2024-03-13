@@ -528,13 +528,29 @@ public abstract class RelationalDatabaseConnectorConfig extends CommonConnectorC
                     + "A `ascending` value will order the tables by row count ascending. "
                     + "A value of `disabled` (the default) will disable ordering by row count.");
 
+    public static final Field HEVO_BATCH_ID = Field.create("batch.id")
+            .withDisplayName("Hevo Batch Id")
+            .withType(Type.STRING)
+            .withWidth(Width.MEDIUM)
+            .withImportance(Importance.MEDIUM)
+            .withDescription("Batch id to recognize the batch for which the connector is running currently");
+
+    public static final Field HEVO_STATS_CONSUMER = Field.create("stats.consumer")
+            .withDisplayName("Stats Consumer class")
+            .withType(Type.STRING)
+            .withWidth(Width.MEDIUM)
+            .withImportance(Importance.MEDIUM)
+            .withDescription("Stats consumer");
+
     protected static final ConfigDefinition CONFIG_DEFINITION = CommonConnectorConfig.CONFIG_DEFINITION.edit()
             .type(
                     CommonConnectorConfig.TOPIC_PREFIX)
             .connector(
                     DECIMAL_HANDLING_MODE,
                     TIME_PRECISION_MODE,
-                    SNAPSHOT_LOCK_TIMEOUT_MS)
+                    SNAPSHOT_LOCK_TIMEOUT_MS,
+                    HEVO_BATCH_ID,
+                    HEVO_STATS_CONSUMER)
             .events(
                     COLUMN_INCLUDE_LIST,
                     COLUMN_EXCLUDE_LIST,
@@ -651,6 +667,20 @@ public abstract class RelationalDatabaseConnectorConfig extends CommonConnectorC
     public Duration snapshotLockTimeout() {
         return Duration.ofMillis(getConfig().getLong(SNAPSHOT_LOCK_TIMEOUT_MS));
     }
+
+    /**
+     * Returns corresponding Hevo batch id associated with the connector run.
+     *
+     * @return the hevo batch id .
+     */
+    public String getHevoBatchId() { return getConfig().getString(HEVO_BATCH_ID);}
+
+    /**
+     * Returns hevo's batch stats consumer class.
+     *
+     * @return class name.
+     */
+    public String getStatsConsumer() {return getConfig().getString(HEVO_STATS_CONSUMER);}
 
     public String schemaExcludeList() {
         return getConfig().getString(SCHEMA_EXCLUDE_LIST);
