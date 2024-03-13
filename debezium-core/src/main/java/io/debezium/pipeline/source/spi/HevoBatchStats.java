@@ -56,8 +56,18 @@ public interface HevoBatchStats {
      */
     public abstract String getDBZBatchEndPosition();
 
+    /**
+     * Gets dbz batch commited transactions count.
+     *
+     * @return the dbz batch commited transactions count
+     */
     public  abstract Long getDBZBatchCommitedTransactionsCount();
 
+    /**
+     * Gets last commit position.
+     *
+     * @return the last commit position
+     */
     public abstract String getLastCommitPosition();
 
 }
