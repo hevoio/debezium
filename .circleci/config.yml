@@ -1,0 +1,34 @@
+version: 2.1
+
+orbs:
+  gh: circleci/github-cli@2.2.0
+  aws-cli: circleci/aws-cli@4.1.0
+
+jobs:
+  build:
+    parameters:
+      target_branch:
+        type: string
+        default: ""
+    machine:
+      image: ubuntu-2004:202201-02
+    resource_class: medium
+    shell: /bin/bash --login
+    working_directory: ~/debezium/
+    environment:
+      GITHUB_TOKEN: GH_TOKEN
+    steps:
+      - checkout:
+          path: ~/debezium
+      - gh/setup
+      - run:
+          name: setup maven settings
+          command: |
+            cp .m2/settings.xml ~/.m2/settings.xml &&
+            sed -i "s/ci-password/$HEVO_M2_WAGON_PASSWORD/g" ~/.m2/settings.xml &&
+            sed -i 's,ci-auth-token,'"$HEVO_M2_WAGON_AUTH_URL"',g' ~/.m2/settings.xml
+      - run:
+          name: Build debezium-connector
+          command: mvn clean verify
+          no_output_timeout: 30m
+
