@@ -268,18 +268,18 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
                         }
 
                         if (context.isRunning()) {
-                            LOGGER.info("Observability metrics tracking: iteration: {}, starting logminer for SCN range - startScn: {}, endScn: {}",  iterations++, startScn, endScn);
+                            LOGGER.info("Observability metrics tracking: iteration: {}, starting logminer for SCN range - startScn: {}, endScn: {}, for batch: {}",  iterations++, startScn, endScn, connectorConfig.getHevoBatchId());
                             if (!startMiningSession(jdbcConnection, startScn, endScn, retryAttempts)) {
                                 retryAttempts++;
                             }
                             else {
                                 retryAttempts = 1;
-                                LOGGER.info("Observability metrics tracking: iteration: {}, starting mining in SCN range - startScn: {}, endScn: {}", iterations, startScn, endScn);
+                                LOGGER.info("Observability metrics tracking: iteration: {}, starting mining in SCN range - startScn: {}, endScn: {}, for batch: {}", iterations, startScn, endScn, connectorConfig.getHevoBatchId());
 
                                 startScn = processor.process(startScn, endScn);
                                 streamingMetrics.setCurrentBatchProcessingTime(Duration.between(start, Instant.now()));
                                 captureSessionMemoryStatistics(jdbcConnection);
-                                LOGGER.info("Observability metrics tracking: iteration: {}, mining complete for batch in SCN range - startScn: {}, endScn: {}, total records processed: {}, last commit SCN: {}", iterations++, startScn, endScn, streamingMetrics.getTotalProcessedRows(), streamingMetrics.getCommittedScn());
+                                LOGGER.info("Observability metrics tracking: iteration: {}, mining complete for batch in SCN range - startScn: {}, endScn: {}, total records processed: {}, last commit SCN: {}, for batch: {}", iterations++, startScn, endScn, streamingMetrics.getTotalProcessedRows(), streamingMetrics.getCommittedScn(), connectorConfig.getHevoBatchId());
                             }
                             pauseBetweenMiningSessions();
                         }

@@ -803,6 +803,7 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
         return new HevoOracleJobProgressStats(this);
     }
 
+    @Override
     public HevoJobSummaryStats<OraclePartition> getJobSummaryStats(){return new HevoOracleJobSummaryStats(this);}
 
     @Override

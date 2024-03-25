@@ -47,7 +47,9 @@ class SqlServerStreamingTaskMetrics extends AbstractSqlServerTaskMetrics<SqlServ
         connectionMeter.connected(connected);
     }
 
+    @Override
     public HevoJobProgressStats<SqlServerPartition> getCurrentJobProgressStats(){return  null;}
 
+    @Override
     public HevoJobSummaryStats<SqlServerPartition> getJobSummaryStats(){return  null;}
 }

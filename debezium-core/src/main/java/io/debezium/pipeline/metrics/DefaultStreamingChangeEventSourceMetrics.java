@@ -100,7 +100,9 @@ public class DefaultStreamingChangeEventSourceMetrics<P extends Partition> exten
         connectionMeter.reset();
     }
 
+    @Override
     public HevoJobProgressStats<P> getCurrentJobProgressStats(){return  null;}
 
+    @Override
     public HevoJobSummaryStats<P> getJobSummaryStats(){return  null;}
 }
