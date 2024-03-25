@@ -1,5 +1,9 @@
 package io.debezium.pipeline.source.spi;
 
-public interface HevoStatsConsumer {
-    public abstract void publishStats(HevoBatchStats hevoBatchStats);
+import io.debezium.pipeline.spi.Partition;
+
+public interface HevoStatsConsumer<P extends Partition> {
+    public abstract void publishProgressStats(HevoJobProgressStats<P> hevoBatchStats);
+
+    public abstract void publishSummaryStats(HevoJobSummaryStats<P> hevoBatchStats);
 }

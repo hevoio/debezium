@@ -542,6 +542,13 @@ public abstract class RelationalDatabaseConnectorConfig extends CommonConnectorC
             .withImportance(Importance.MEDIUM)
             .withDescription("Stats consumer");
 
+    public static final Field HEVO_STATS_SYNC_FREQ = Field.create("stats.sync.freq")
+            .withDisplayName("Stats sync frequency")
+            .withType(Type.STRING)
+            .withWidth(Width.MEDIUM)
+            .withImportance(Importance.MEDIUM)
+            .withDescription("Stats sync frequency");
+
     protected static final ConfigDefinition CONFIG_DEFINITION = CommonConnectorConfig.CONFIG_DEFINITION.edit()
             .type(
                     CommonConnectorConfig.TOPIC_PREFIX)
@@ -550,7 +557,8 @@ public abstract class RelationalDatabaseConnectorConfig extends CommonConnectorC
                     TIME_PRECISION_MODE,
                     SNAPSHOT_LOCK_TIMEOUT_MS,
                     HEVO_BATCH_ID,
-                    HEVO_STATS_CONSUMER)
+                    HEVO_STATS_CONSUMER,
+                    HEVO_STATS_SYNC_FREQ)
             .events(
                     COLUMN_INCLUDE_LIST,
                     COLUMN_EXCLUDE_LIST,
@@ -681,6 +689,10 @@ public abstract class RelationalDatabaseConnectorConfig extends CommonConnectorC
      * @return class name.
      */
     public String getStatsConsumer() {return getConfig().getString(HEVO_STATS_CONSUMER);}
+
+    public long getStatsSyncFrequecny() {
+        return getConfig().getLong(HEVO_STATS_SYNC_FREQ);
+    }
 
     public String schemaExcludeList() {
         return getConfig().getString(SCHEMA_EXCLUDE_LIST);

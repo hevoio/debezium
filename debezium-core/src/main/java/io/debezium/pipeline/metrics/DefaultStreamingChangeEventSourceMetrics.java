@@ -7,6 +7,8 @@ package io.debezium.pipeline.metrics;
 
 import java.util.Map;
 
+import io.debezium.pipeline.source.spi.HevoJobProgressStats;
+import io.debezium.pipeline.source.spi.HevoJobSummaryStats;
 import org.apache.kafka.connect.data.Struct;
 
 import io.debezium.annotation.ThreadSafe;
@@ -97,4 +99,8 @@ public class DefaultStreamingChangeEventSourceMetrics<P extends Partition> exten
         streamingMeter.reset();
         connectionMeter.reset();
     }
+
+    public HevoJobProgressStats<P> getCurrentJobProgressStats(){return  null;}
+
+    public HevoJobSummaryStats<P> getJobSummaryStats(){return  null;}
 }

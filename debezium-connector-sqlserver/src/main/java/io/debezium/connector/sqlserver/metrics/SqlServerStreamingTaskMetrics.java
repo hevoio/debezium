@@ -13,6 +13,8 @@ import io.debezium.connector.sqlserver.SqlServerPartition;
 import io.debezium.pipeline.meters.ConnectionMeter;
 import io.debezium.pipeline.metrics.StreamingChangeEventSourceMetrics;
 import io.debezium.pipeline.source.spi.EventMetadataProvider;
+import io.debezium.pipeline.source.spi.HevoJobProgressStats;
+import io.debezium.pipeline.source.spi.HevoJobSummaryStats;
 import io.debezium.util.Collect;
 
 class SqlServerStreamingTaskMetrics extends AbstractSqlServerTaskMetrics<SqlServerStreamingPartitionMetrics>
@@ -44,4 +46,8 @@ class SqlServerStreamingTaskMetrics extends AbstractSqlServerTaskMetrics<SqlServ
     public void connected(boolean connected) {
         connectionMeter.connected(connected);
     }
+
+    public HevoJobProgressStats<SqlServerPartition> getCurrentJobProgressStats(){return  null;}
+
+    public HevoJobSummaryStats<SqlServerPartition> getJobSummaryStats(){return  null;}
 }

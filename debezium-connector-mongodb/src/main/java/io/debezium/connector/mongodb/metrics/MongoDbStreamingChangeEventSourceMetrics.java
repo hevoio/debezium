@@ -16,6 +16,8 @@ import io.debezium.connector.mongodb.PrimaryElectionEvent;
 import io.debezium.pipeline.ConnectorEvent;
 import io.debezium.pipeline.metrics.DefaultStreamingChangeEventSourceMetrics;
 import io.debezium.pipeline.source.spi.EventMetadataProvider;
+import io.debezium.pipeline.source.spi.HevoJobProgressStats;
+import io.debezium.pipeline.source.spi.HevoJobSummaryStats;
 import io.debezium.util.Collect;
 
 /**

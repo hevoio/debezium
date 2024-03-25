@@ -24,11 +24,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import io.debezium.config.Instantiator;
-import io.debezium.connector.oracle.HevoOracleBatchStats;
 import io.debezium.pipeline.source.spi.HevoStatsConsumer;
+import io.debezium.pipeline.source.spi.HevoStatsPublisher;
+import org.apache.kafka.common.utils.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +103,8 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
 
     HevoStatsConsumer statsConsumer;
 
+    HevoStatsPublisher<OraclePartition> statsPublisher;
+
     public LogMinerStreamingChangeEventSource(OracleConnectorConfig connectorConfig,
                                               OracleConnection jdbcConnection, EventDispatcher<OraclePartition, TableId> dispatcher,
                                               ErrorHandler errorHandler, Clock clock, OracleDatabaseSchema schema,
@@ -119,6 +126,7 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
         this.initialDelay = connectorConfig.getLogMiningInitialDelay();
         this.maxDelay = connectorConfig.getLogMiningMaxDelay();
         this.statsConsumer = initialiseStatsConsumer();
+        this.statsPublisher = new HevoStatsPublisher<>(statsConsumer, connectorConfig.getStatsSyncFrequecny(), streamingMetrics);
     }
 
     @Override
@@ -157,12 +165,15 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
             LOGGER.info("Streaming is not enabled in current configuration");
             return;
         }
+        ExecutorService executorService = Executors.newSingleThreadScheduledExecutor(ThreadUtils.createThreadFactory(
+                "StatsPublisher"+"-%d", true));
+
         try {
-
+            streamingMetrics.registerJobStartTime();
             prepareConnection(false);
-
             this.effectiveOffset = offsetContext;
             startScn = offsetContext.getScn();
+            streamingMetrics.setStartScn(startScn);
             snapshotScn = offsetContext.getSnapshotScn();
             Scn firstScn = getFirstScnInLogs(jdbcConnection);
             if (startScn.compareTo(snapshotScn) == 0) {
@@ -195,6 +206,9 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
                     int retryAttempts = 1;
                     Stopwatch sw = Stopwatch.accumulating().start();
                     int iterations = 1;
+
+                    executorService.submit(statsPublisher);
+
                     while (context.isRunning()) {
                         // Calculate time difference before each mining session to detect time zone offset changes (e.g. DST) on database server
                         streamingMetrics.calculateTimeDifference(getDatabaseSystemTime(jdbcConnection));
@@ -261,12 +275,10 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
                             else {
                                 retryAttempts = 1;
                                 LOGGER.info("Observability metrics tracking: iteration: {}, starting mining in SCN range - startScn: {}, endScn: {}", iterations, startScn, endScn);
-                                streamingMetrics.setStartScn(startScn);
-                                streamingMetrics.setEndScn(endScn);
+
                                 startScn = processor.process(startScn, endScn);
                                 streamingMetrics.setCurrentBatchProcessingTime(Duration.between(start, Instant.now()));
                                 captureSessionMemoryStatistics(jdbcConnection);
-                                publishBatchStats(iterations);
                                 LOGGER.info("Observability metrics tracking: iteration: {}, mining complete for batch in SCN range - startScn: {}, endScn: {}, total records processed: {}, last commit SCN: {}", iterations++, startScn, endScn, streamingMetrics.getTotalProcessedRows(), streamingMetrics.getCommittedScn());
                             }
                             pauseBetweenMiningSessions();
@@ -281,17 +293,11 @@ public class LogMinerStreamingChangeEventSource implements StreamingChangeEventS
             errorHandler.setProducerThrowable(t);
         }
         finally {
+            streamingMetrics.registerJobEndTime();
+            executorService.shutdownNow();
             LOGGER.info("startScn={}, endScn={}", startScn, endScn);
             LOGGER.info("Streaming metrics dump: {}", streamingMetrics.toString());
             LOGGER.info("Offsets: {}", offsetContext);
-        }
-    }
-
-    private void publishBatchStats(long runNumber){
-        if(Objects.nonNull(statsConsumer)) {
-            statsConsumer.publishStats(new HevoOracleBatchStats(streamingMetrics.getCurrentScn(), streamingMetrics.getLastCapturedDmlCount(), streamingMetrics.getLastBatchProcessingTimeInMilliseconds(), streamingMetrics.getNumberOfCommittedTransactions(), streamingMetrics.getCommittedScn(), streamingMetrics.getCommitedDmlCount(), streamingMetrics.getSkippedDmlCount(), streamingMetrics.getBatchStartScn(), streamingMetrics.getBatchEndScn()));
-        }else {
-            LOGGER.warn("Observability stats could not be published for batch id: {}, on run number: {}", connectorConfig.getHevoBatchId(), runNumber);
         }
     }
 

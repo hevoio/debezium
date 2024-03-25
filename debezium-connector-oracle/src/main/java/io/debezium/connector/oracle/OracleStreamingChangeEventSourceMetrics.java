@@ -6,6 +6,7 @@
 package io.debezium.connector.oracle;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -18,6 +19,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import io.debezium.pipeline.source.spi.HevoJobProgressStats;
+import io.debezium.pipeline.source.spi.HevoJobSummaryStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +48,6 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
 
     private final AtomicReference<Scn> startScn = new AtomicReference<>();
 
-    private final AtomicReference<Scn> endScn = new AtomicReference<>();
     private final AtomicInteger logMinerQueryCount = new AtomicInteger();
     private final AtomicInteger totalCapturedDmlCount = new AtomicInteger();
     private final AtomicReference<Duration> totalDurationOfFetchingQuery = new AtomicReference<>();
@@ -107,6 +109,10 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
     private final AtomicLong miningSessionProcessGlobalAreaMemory = new AtomicLong();
     private final AtomicLong miningSessionProcessGlobalAreaMaxMemory = new AtomicLong();
 
+    private final AtomicReference<Timestamp> jobStartTime = new AtomicReference<>();
+
+    private final AtomicReference<Timestamp> jobEndTime = new AtomicReference<>();
+
     // Constants for sliding window algorithm
     private final int batchSizeMin;
     private final int batchSizeMax;
@@ -145,7 +151,6 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
 
         currentScn.set(Scn.NULL);
         startScn.set(Scn.NULL);
-        endScn.set(Scn.NULL);
         oldestScn.set(Scn.NULL);
         offsetScn.set(Scn.NULL);
         committedScn.set(Scn.NULL);
@@ -224,8 +229,6 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
     }
 
     public void setStartScn(Scn scn){startScn.set(scn);}
-
-    public void setEndScn(Scn scn){endScn.set(scn);}
 
     public void setCurrentLogFileName(Set<String> names) {
         currentLogFileName.set(names.stream().toArray(String[]::new));
@@ -455,6 +458,22 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
         return maxBatchProcessingTime.get().toMillis();
     }
 
+    public Timestamp getJobStartTime(){
+        return jobStartTime.get();
+    }
+
+    public Timestamp getJobEndTime(){
+        return jobEndTime.get();
+    }
+
+    public void registerJobStartTime(){
+        jobStartTime.set(Timestamp.from(Instant.now()));
+    }
+
+    public void registerJobEndTime(){
+        jobEndTime.set(Timestamp.from(Instant.now()));
+    }
+
     public void setCurrentBatchProcessingTime(Duration currentBatchProcessingTime) {
         totalProcessingTime.accumulateAndGet(currentBatchProcessingTime, Duration::plus);
         setLastDurationOfBatchProcessing(currentBatchProcessingTime);
@@ -644,9 +663,7 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
 
     public long getSkippedDmlCount(){return skippedDmlCount.get();}
 
-    public BigInteger getBatchStartScn(){return startScn.get().asBigInteger();}
-
-    public BigInteger getBatchEndScn(){return endScn.get().asBigInteger();}
+    public BigInteger getJobStartScn(){return startScn.get().asBigInteger();}
 
     @Override
     public long getMiningSessionProcessGlobalAreaMaxMemoryInBytes() {
@@ -780,6 +797,13 @@ public class OracleStreamingChangeEventSourceMetrics extends DefaultStreamingCha
             miningSessionProcessGlobalAreaMaxMemory.set(pgaMemory);
         }
     }
+
+    @Override
+    public HevoJobProgressStats<OraclePartition> getCurrentJobProgressStats(){
+        return new HevoOracleJobProgressStats(this);
+    }
+
+    public HevoJobSummaryStats<OraclePartition> getJobSummaryStats(){return new HevoOracleJobSummaryStats(this);}
 
     @Override
     public String toString() {
